@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@media クエリ練習用デモサイト</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #444;
+            overflow: hidden;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style-type: none;
+        }
+        
+        nav li {
+            flex: 1;
+            text-align: center;
+        }
+        
+        nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+        }
+        
+        nav a:hover {
+            background-color: #555;
+        }
+        
+        .main-content {
+            display: flex;
+            margin: 20px 0;
+        }
+        
+        .content {
+            flex: 3;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar {
+            flex: 1;
+            background-color: #e9e9e9;
+            padding: 20px;
+            margin-left: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            flex-basis: 30%;
+            background-color: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        /* デフォルト：モバイルファースト設計（小さい画面用） */
+        .mobile-warning {
+            display: none;
+            background-color: #ffcc00;
+            padding: 10px;
+            text-align: center;
+            color: #333;
+        }
+        
+        /* タブレット用のスタイル */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            
+            .card {
+                flex-basis: 48%;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            nav li {
+                flex-basis: 50%;
+            }
+        }
+        
+        /* モバイル用のスタイル */
+        @media screen and (max-width: 480px) {
+            .card {
+                flex-basis: 100%;
+            }
+            
+            nav li {
+                flex-basis: 100%;
+            }
+            
+            .mobile-warning {
+                display: block;
+            }
+        }
+        
+        /* デモ用の修正ボタン */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .issue {
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #ffeeee;
+            border-left: 4px solid #ff8888;
+        }
+        
+        .fixed {
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #eeffee;
+            border-left: 4px solid #88ff88;
+            display: none;
+        }
+        
+        code {
+            display: block;
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        
+        .device-info {
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-warning">
+        現在モバイルビューで表示しています
+    </div>
+    
+    <header>
+        <h1>@media クエリ練習用デモサイト</h1>
+        <p>画面サイズを変更して、レスポンシブデザインを体験しよう！</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#">ホーム</a></li>
+            <li><a href="#">コース</a></li>
+            <li><a href="#">リソース</a></li>
+            <li><a href="#">お問い合わせ</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="device-info">
+            <h3>現在の画面情報</h3>
+            <p>画面幅: <span id="screen-width">-</span>px</p>
+            <p>デバイスタイプ: <span id="device-type">-</span></p>
+        </div>
+        
+        <div class="main-content">
+            <div class="content">
+                <h2>@media クエリとは？</h2>
+                <p>@media クエリは、CSS3の機能で、デバイスの特性（画面サイズなど）に基づいてスタイルを適用することができます。これにより、さまざまなデバイスに最適化されたレスポンシブウェブデザインを実現できます。</p>
+                
+                <div class="issue">
+                    <h3>問題点</h3>
+                    <p>画面サイズが小さくなると、コンテンツとサイドバーが並列に表示されるとスペースが狭くなり、読みにくくなります。また、ナビゲーションリンクも狭くなり、タップしづらくなります。</p>
+                </div>
+                
+                <div class="fixed">
+                    <h3>解決策</h3>
+                    <p>@media クエリを使用して、画面サイズに応じてレイアウトを変更します：</p>
+                    <code>/* タブレット用のスタイル */
+@media screen and (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}</code>
+                    <p>これにより、タブレットサイズでは、サイドバーがメインコンテンツの下に移動し、十分な幅を確保できます。</p>
+                </div>
+                
+                <div class="card-container">
+                    <div class="card">
+                        <h3>デスクトップ</h3>
+                        <p>画面幅が広いデバイス向けのデザイン。通常、複数カラムのレイアウトが効果的です。</p>
+                    </div>
+                    <div class="card">
+                        <h3>タブレット</h3>
+                        <p>中程度の画面幅のデバイス。デスクトップほど複雑なレイアウトは避けるべきです。</p>
+                    </div>
+                    <div class="card">
+                        <h3>モバイル</h3>
+                        <p>小さな画面幅のデバイス。シンプルな単一カラムのレイアウトが最適です。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h3>@media クエリ例</h3>
+                <p>画面幅に基づくメディアクエリ：</p>
+                <code>@media screen and (max-width: 768px) { ... }</code>
+                <p>印刷用のスタイル：</p>
+                <code>@media print { ... }</code>
+                <p>向きに基づくメディアクエリ：</p>
+                <code>@media (orientation: portrait) { ... }</code>
+                <p>解像度に基づくメディアクエリ：</p>
+                <code>@media (-webkit-min-device-pixel-ratio: 2) { ... }</code>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>新人エンジニア向け @media クエリ練習用デモサイト &copy; 2025</p>
+    </footer>
+    
+    <div class="controls">
+        <button onclick="toggleFix()">修正を表示/非表示</button>
+        <button onclick="clearLocalStorage()">リセット</button>
+    </div>
+    
+    <script>
+        // 画面情報の更新
+        function updateScreenInfo() {
+            document.getElementById('screen-width').textContent = window.innerWidth;
+            
+            let deviceType = "デスクトップ";
+            if (window.innerWidth <= 768) deviceType = "タブレット";
+            if (window.innerWidth <= 480) deviceType = "モバイル";
+            
+            document.getElementById('device-type').textContent = deviceType;
+        }
+        
+        // 初期化
+        window.onload = function() {
+            updateScreenInfo();
+            
+            // ローカルストレージからの状態復元
+            if (localStorage.getItem('showFix') === 'true') {
+                document.querySelectorAll('.fixed').forEach(item => {
+                    item.style.display = 'block';
+                });
+            }
+        };
+        
+        // 画面サイズ変更時
+        window.onresize = updateScreenInfo;
+        
+        // 修正の表示/非表示
+        function toggleFix() {
+            let fixedElements = document.querySelectorAll('.fixed');
+            let isVisible = fixedElements[0].style.display === 'block';
+            
+            fixedElements.forEach(item => {
+                item.style.display = isVisible ? 'none' : 'block';
+            });
+            
+            localStorage.setItem('showFix', !isVisible);
+        }
+        
+        // リセット
+        function clearLocalStorage() {
+            localStorage.removeItem('showFix');
+            document.querySelectorAll('.fixed').forEach(item => {
+                item.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
